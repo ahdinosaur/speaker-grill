@@ -1,0 +1,13 @@
+{
+  "name": "speaker-grill",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "OPENSCADPATH=$(pwd) openscad main.scad"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0"
+}
