@@ -1,8 +1,6 @@
 // https://gist.github.com/lorennorman/1534990
 
-module hexagon(radius) {
-  circle(r = radius, $fn=6);
-}
+include <hexagon.scad>;
 
 module shell(radius) {
   difference() {
@@ -30,7 +28,7 @@ module translate_to_hex(x_coord, y_coord, hex_width) {
     y_coord*hex_width * 2 + column_to_offset(x_coord, hex_width),
     0
   ])
-  child(0);
+  children();
 }
 
 module hex_grid(rows, columns, hex_width) {
