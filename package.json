@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "OPENSCADPATH=$(pwd) openscad main.scad"
+    "build": "OPENSCADPATH=$(pwd) openscad main.scad"
   },
   "keywords": [],
   "author": "",
