@@ -1,88 +1,110 @@
 include <./hexagon.scad>;
 include <./hex-grid.scad>;
 
-SPEAKER_GRILL_LENGTH = 60;
-SPEAKER_GRILL_WIDTH = 60;
-SPEAKER_GRILL_THICKNESS = 10;
+// circle
+//   inner diameter 159mm
+//   outer diameter 192mm
+//   (implied width 16.5)
+//   width 16.8mm
+//
+//
+// circle
+//   bolt is 87.3mm from center
+//   bolts are 138.2mm apart
+//
+//
+//  calculate angle:
+//    - opposite = 138.2 / 2 = 69.1
+//    - hypotenuse = 87.3
+//    - sin(angle) = opposite / hypotenuse
+//    - angle = 52.33
 
-SPEAKER_GRILL_BORDER_WIDTH = 10;
+EPS = 0.001;
 
-SPEAKER_GRILL_HEX_WIDTH = 2;
+SPEAKER_GRILL_BIG_DIAMETER = 174.6;
+SPEAKER_GRILL_BIG_CORNER_ANGLE = 52.33;
 
-SPEAKER_GRILL_BOLT_RADIUS = 3;
-SPEAKER_GRILL_BOLT_POSITIONS = [
-  [5, 5],
-  [5, SPEAKER_GRILL_WIDTH - 5],
+SPEAKER_GRILL_THICKNESS = 2;
+SPEAKER_GRILL_BORDER_WIDTH = 16;
 
-  [SPEAKER_GRILL_LENGTH - 5, 5],
-  [SPEAKER_GRILL_LENGTH - 5, SPEAKER_GRILL_WIDTH - 5],
-];
-SPEAKER_GRILL_BOLT_LENGTH = 5 + SPEAKER_GRILL_THICKNESS;
+SPEAKER_GRILL_MAGNET_RADIUS = 5;
+SPEAKER_GRILL_MAGNET_MARGIN_RADIUS = 15;
+SPEAKER_GRILL_MAGNET_HEIGHT = 2 + EPS;
 
 module speaker_grill() {
-  linear_extrude(SPEAKER_GRILL_THICKNESS);
-  speaker_grill_profile();
-}
-
-module speaker_bolt() {
-  rotate([90, 0, 0])
-  linear_extrude(SPEAKER_GRILL_BOLT_LENGTH)
-  hexagon(SPEAKER_GRILL_BOLT_RADIUS);
-}
-
-module speaker_grill_profile() {
   difference() {
-    union() {
-      speaker_grill_hex_grid_profile();
+    linear_extrude(height = SPEAKER_GRILL_THICKNESS)
+    speaker_grill_big_profile();
 
-      speaker_grill_border_profile();
-    }
-
-    for (bolt_position = SPEAKER_GRILL_BOLT_POSITIONS) {
-      translate(bolt_position)
-      hexagon(SPEAKER_GRILL_BOLT_RADIUS);
-    }
+    translate([0,0, SPEAKER_GRILL_THICKNESS - SPEAKER_GRILL_MAGNET_HEIGHT])
+    linear_extrude(height = SPEAKER_GRILL_MAGNET_HEIGHT + EPS)
+    speaker_grill_corner_holes_profile();
   }
 }
 
-module speaker_grill_hex_grid_profile() {
-  hex_grid_rows = (SPEAKER_GRILL_WIDTH - 2 * SPEAKER_GRILL_BORDER_WIDTH) / SPEAKER_GRILL_HEX_WIDTH;
-  hex_grid_cols = (SPEAKER_GRILL_LENGTH - 2 * SPEAKER_GRILL_BORDER_WIDTH) / SPEAKER_GRILL_HEX_WIDTH;
-
-  translate([
-    SPEAKER_GRILL_BORDER_WIDTH,
-    SPEAKER_GRILL_BORDER_WIDTH,
-  ])
-  intersection() {
-    square([
-      SPEAKER_GRILL_LENGTH - SPEAKER_GRILL_BORDER_WIDTH,
-      SPEAKER_GRILL_WIDTH - SPEAKER_GRILL_BORDER_WIDTH,
-    ]);
-
-    hex_grid(hex_grid_rows, hex_grid_cols, SPEAKER_GRILL_HEX_WIDTH);
-    }
-}
-
-module speaker_grill_border_profile() {
-  translate([
-    (1/2) * SPEAKER_GRILL_LENGTH,
-    (1/2) * SPEAKER_GRILL_WIDTH,
-  ])
-  difference() {
-    square([
-      SPEAKER_GRILL_LENGTH,
-      SPEAKER_GRILL_WIDTH,
-    ], center = true);
-
-    square([
-      SPEAKER_GRILL_LENGTH - 2 * SPEAKER_GRILL_BORDER_WIDTH,
-      SPEAKER_GRILL_WIDTH - 2 * SPEAKER_GRILL_BORDER_WIDTH,
-    ], center = true);
+module speaker_grill_frame() {
+  union() {
+    speaker_grill_big_profile();
   }
 }
 
-if($preview) {
-  speaker_grill();
-
-  // speaker_bolt();
+module speaker_grill_corner_holes_profile() {
+  union() {
+    speaker_grill_big_corner_hole_profiles();
+  }
 }
+
+module speaker_grill_big_profile() {
+  union() {
+    difference() {
+      circle(
+        r = SPEAKER_GRILL_BIG_DIAMETER + SPEAKER_GRILL_BORDER_WIDTH
+      );
+
+      circle(
+        r = SPEAKER_GRILL_BIG_DIAMETER
+      );
+    }
+
+    speaker_grill_big_corner_margin_profiles();
+  }
+}
+
+module speaker_grill_big_corner_margin_profiles() {
+  speaker_grill_big_corners()
+  circle(r = SPEAKER_GRILL_MAGNET_MARGIN_RADIUS);
+}
+
+module speaker_grill_big_corner_hole_profiles() {
+  speaker_grill_big_corners()
+  circle(r = SPEAKER_GRILL_MAGNET_RADIUS);
+}
+
+module speaker_grill_big_corners() {
+  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  children();
+
+  rotate(SPEAKER_GRILL_BIG_CORNER_ANGLE)
+  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  children();
+
+  rotate(-SPEAKER_GRILL_BIG_CORNER_ANGLE)
+  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  children();
+
+  rotate(-180)
+  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  children();
+
+  rotate(-180 - SPEAKER_GRILL_BIG_CORNER_ANGLE)
+  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  children();
+
+  rotate(-180 + SPEAKER_GRILL_BIG_CORNER_ANGLE)
+  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  children();
+}
+
+speaker_grill();
+
+// speaker_bolt();
