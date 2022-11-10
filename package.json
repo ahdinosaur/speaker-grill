@@ -5,8 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "OPENSCADPATH=$(pwd) openscad main.scad"
-    "build": "OPENSCADPATH=$(pwd) openscad main.scad"
+    "dev": "OPENSCADPATH=$(pwd) openscad main.scad",
+    "build:png": "OPENSCADPATH=$(pwd) openscad main.scad -o build.png",
+    "build:stl": "OPENSCADPATH=$(pwd) openscad main.scad -o build.stl"
   },
   "keywords": [],
   "author": "",

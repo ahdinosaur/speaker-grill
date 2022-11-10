@@ -58,11 +58,11 @@ module speaker_grill_big_profile() {
   union() {
     difference() {
       circle(
-        r = SPEAKER_GRILL_BIG_DIAMETER + SPEAKER_GRILL_BORDER_WIDTH
+        d = SPEAKER_GRILL_BIG_DIAMETER + SPEAKER_GRILL_BORDER_WIDTH
       );
 
       circle(
-        r = SPEAKER_GRILL_BIG_DIAMETER
+        d = SPEAKER_GRILL_BIG_DIAMETER
       );
     }
 
@@ -81,27 +81,27 @@ module speaker_grill_big_corner_hole_profiles() {
 }
 
 module speaker_grill_big_corners() {
-  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  translate([0, (1/2) * SPEAKER_GRILL_BIG_DIAMETER])
   children();
 
   rotate(SPEAKER_GRILL_BIG_CORNER_ANGLE)
-  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  translate([0, (1/2) * SPEAKER_GRILL_BIG_DIAMETER])
   children();
 
   rotate(-SPEAKER_GRILL_BIG_CORNER_ANGLE)
-  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  translate([0, (1/2) * SPEAKER_GRILL_BIG_DIAMETER])
   children();
 
   rotate(-180)
-  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  translate([0, (1/2) * SPEAKER_GRILL_BIG_DIAMETER])
   children();
 
   rotate(-180 - SPEAKER_GRILL_BIG_CORNER_ANGLE)
-  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  translate([0, (1/2) * SPEAKER_GRILL_BIG_DIAMETER])
   children();
 
   rotate(-180 + SPEAKER_GRILL_BIG_CORNER_ANGLE)
-  translate([0, SPEAKER_GRILL_BIG_DIAMETER])
+  translate([0, (1/2) * SPEAKER_GRILL_BIG_DIAMETER])
   children();
 }
 
