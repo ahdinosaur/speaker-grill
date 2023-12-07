@@ -19,17 +19,22 @@ include <./hex-grid.scad>;
 //    - sin(angle) = opposite / hypotenuse
 //    - angle = 52.33
 
+$fn = $preview ? 32 : 128;
+
 EPS = 0.001;
 
 SPEAKER_GRILL_BIG_DIAMETER = 174.6;
 SPEAKER_GRILL_BIG_CORNER_ANGLE = 52.33;
 
-SPEAKER_GRILL_THICKNESS = 2;
-SPEAKER_GRILL_BORDER_WIDTH = 16;
+SPEAKER_GRILL_THICKNESS = 10;
+SPEAKER_GRILL_BORDER_WIDTH = 10;
 
-SPEAKER_GRILL_MAGNET_RADIUS = 5;
-SPEAKER_GRILL_MAGNET_MARGIN_RADIUS = 15;
-SPEAKER_GRILL_MAGNET_HEIGHT = 2 + EPS;
+SPEAKER_GRILL_MAGNET_RADIUS = 6.2;
+SPEAKER_GRILL_MAGNET_MARGIN_RADIUS = SPEAKER_GRILL_MAGNET_RADIUS + 0.5 * SPEAKER_GRILL_BORDER_WIDTH;
+SPEAKER_GRILL_MAGNET_HEIGHT = SPEAKER_GRILL_THICKNESS - 2 + EPS;
+
+SPEAKER_GRILL_GLUER_RADIUS = (SPEAKER_GRILL_BIG_DIAMETER / 2) + SPEAKER_GRILL_MAGNET_MARGIN_RADIUS + 4;
+SPEAKER_GRILL_GLUER_MARGIN = 0.6;
 
 module speaker_grill() {
   difference() {
@@ -58,11 +63,11 @@ module speaker_grill_big_profile() {
   union() {
     difference() {
       circle(
-        d = SPEAKER_GRILL_BIG_DIAMETER + SPEAKER_GRILL_BORDER_WIDTH
+        d = SPEAKER_GRILL_BIG_DIAMETER + SPEAKER_GRILL_MAGNET_RADIUS + 2 * SPEAKER_GRILL_BORDER_WIDTH
       );
 
       circle(
-        d = SPEAKER_GRILL_BIG_DIAMETER
+        d = SPEAKER_GRILL_BIG_DIAMETER + SPEAKER_GRILL_MAGNET_RADIUS + SPEAKER_GRILL_BORDER_WIDTH
       );
     }
 
@@ -105,6 +110,22 @@ module speaker_grill_big_corners() {
   children();
 }
 
+module speaker_grill_gluer() {
+  linear_extrude(height = SPEAKER_GRILL_THICKNESS)
+  difference() {
+    circle(r = SPEAKER_GRILL_GLUER_RADIUS);
+
+    circle(
+      d = SPEAKER_GRILL_BIG_DIAMETER +
+        SPEAKER_GRILL_MAGNET_RADIUS +
+        2 * SPEAKER_GRILL_BORDER_WIDTH +
+        SPEAKER_GRILL_GLUER_MARGIN
+    );
+  }
+}
+
 speaker_grill();
+
+speaker_grill_gluer();
 
 // speaker_bolt();
