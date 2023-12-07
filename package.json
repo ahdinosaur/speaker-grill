@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "OPENSCADPATH=$(pwd) openscad main.scad",
-    "build:png": "OPENSCADPATH=$(pwd) openscad main.scad -o build.png",
-    "build:stl": "OPENSCADPATH=$(pwd) openscad main.scad -o build.stl"
+    "build:png": "OPENSCADPATH=$(pwd) openscad main.scad -o speaker-grill.png",
+    "build:stl": "OPENSCADPATH=$(pwd) openscad main.scad -o speaker-grill.stl"
   },
   "keywords": [],
   "author": "",
