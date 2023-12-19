@@ -4,7 +4,7 @@ _work in progress_
 
 DIY speaker grill made using OpenSCAD
 
-![](./build.png)
+![](./speaker-grill.png)
 
 ## license
 
